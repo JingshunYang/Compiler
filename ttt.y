@@ -10,7 +10,6 @@
 %token ASSERT
 %token ID T F DECIDER
 %token NONDETER BOP
-%token EOL
 
 %%
 prog  : decl1 proc1
