@@ -31,6 +31,13 @@
 "=>"			{return BOP;}
 "\n"			{printf("newline ");}
 
+"(" 			{printf("OP\n");return OP;}
+")" 			{printf("CP\n");return CP;}
+":"				{printf(":\n");	return COLON;}
+";"				{printf(";\n");	return TAG;}
+"!"				{printf("!\n");	return NOT;}
+":="			{printf(":=\n");return EQ;}
+
 "*"				{printf("NONDETER ");return (NONDETER);}
 
 [ \t] 		{}
