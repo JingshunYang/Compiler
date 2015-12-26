@@ -1,4 +1,4 @@
-000
+
 %{
 #include "ttt.tab.h"
 %}
