@@ -1,7 +1,7 @@
 %{
 #include<stdio.h>
 %}
-%token TAG TAG
+%token TAG COLON
 %token DECL BEG END ENFORCE
 %token VOID BOOL
 %token SKIP GOTO RETURN
@@ -58,7 +58,7 @@ expr1 :
       ;
 expr  : expr BOP expr
       | OP expr CP
-      | '!' expr
+      | NOT expr
       | ID
       | const
       | NONDETER
