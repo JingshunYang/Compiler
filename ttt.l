@@ -30,21 +30,25 @@ id   {letter}+({letter}|{dec})*
 "assert" 	{printf("ASSERT ");return ASSERT;}
 decider   {printf("DECIDER "); return DECIDER;}
 
-{ident}   { printf("ID %s\n",yytext);return ID;}
+{id}   { printf("ID %s\n",yytext);return ID;}
 
 "0"				{printf("F ");return F;}
 "1"				{printf("T ");return T;}
-[|&^=]		{return ;}
+
+"|"        {return '|';}
+"&"        {return '&';}
+"^"        {return '^';}
+"="        {return '=';}
+
 "!="			{return UEQ;}
 "=>"			{return ARROW;}
 
 "(" 			{return '(';}
-")" 			{printf("CP\n");return ;}
-":"				{printf(":\n");	return ;}
-";"				{printf(";\n");	return ;}
-"!"				{printf("!\n");	return ;}
+")" 			{return ')';}
+":"				{return ':';}
+";"				{return ';';}
+"!"				{return '!';}
 ":="			{return EQ;}
-
 "*"				{return '*';}
 
 "//".* 		/*ignore*/
