@@ -1,16 +1,14 @@
 %{
 #include<stdio.h>
 %}
-%token TAG COLON
+
 %token DECL BEG END ENFORCE
 %token VOID BOOL
 %token SKIP GOTO RETURN
 %token IF THEN ELSE FI
 %token WHILE DO OD
-%token ASSERT
-%token ID T F DECIDER
-%token NONDETER BOP EQ NOT
-%token OP CP
+%token ASSERT EQ
+%token ID T F DECIDER UEQ ARROW
 
 %%
 prog  : decl1 proc1
@@ -26,7 +24,7 @@ decl  : DECL id2
 id2   : ID
       | ID id2
       ;
-proc  : type ID OP id1 CP BEG enforce decl1 sseq END
+proc  : type ID '(' id1 ')' BEG enforce decl1 sseq END
       ;
 id1   :
       | ID id1
@@ -34,7 +32,7 @@ id1   :
 type  : VOID
       | BOOL
       ;
-enforce : ENFORCE expr TAG
+enforce : ENFORCE expr ';'
         ;
 sseq  : lstmt2
       ;
@@ -42,26 +40,31 @@ lstmt2: lstmt
       | lstmt lstmt2
       ;
 lstmt : stmt
-      | ID COLON stmt
+      | ID ':' stmt
       ;
-stmt  : SKIP TAG
-      | GOTO ID TAG
-      | RETURN ID TAG
-      | ID EQ expr TAG
-      | IF OP DECIDER CP THEN sseq ELSE sseq FI
-      | WHILE OP expr CP DO sseq OD
-      | ASSERT OP expr CP TAG
-      | ID EQ ID OP expr1 CP
+stmt  : SKIP ';'
+      | GOTO ID ';'
+      | RETURN ID ';'
+      | ID EQ expr ';'
+      | IF '(' DECIDER ')' THEN sseq ELSE sseq FI
+      | WHILE '(' expr ')' DO sseq OD
+      | ASSERT '(' expr ')' ';'
+      | ID EQ ID '(' expr1 ')'
       ;
 expr1 :
       | expr expr1
       ;
-expr  : expr BOP expr
-      | OP expr CP
-      | NOT expr
+expr  : expr '|' expr
+      | expr '&' expr
+      | expr '^' expr
+      | expr '=' expr
+      | expr UEQ expr
+      | expr ARROW expr
+      | '(' expr ')'
+      | '!' expr
       | ID
       | const
-      | NONDETER
+      | '*'
       ;
 const	:	T
 			|	F

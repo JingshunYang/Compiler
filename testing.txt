@@ -1,0 +1,14 @@
+decl a1 bool a2(a1)begin enforce (!*)^a1 
+decl a3
+skip;
+while(a1!=0) do goto a2;
+a2:=a3|0;
+od
+if(decider) then
+assert(1);
+else a3:=a2(a1)
+return a3;
+fi
+end
+
+//a1,a2,a3是id

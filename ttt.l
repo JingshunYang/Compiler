@@ -2,7 +2,14 @@
 #include "ttt.tab.h"
 %}
 
+wspace  [\t\r\x0C ]
+letter  [_a-zA-Z]
+dec     [0-9]
+id   {letter}+({letter}|{dec})*
+
 %%
+\n                          { /* ++yylineno; */ }
+{wspace}                    { /* eat up white space */ }
 
 "decl" 		{printf("DECL ");return DECL;}
 "begin" 	{printf("BEGIN ");return BEG;}
@@ -21,26 +28,25 @@
 "do" 			{printf("DO ");return DO;}
 "od" 			{printf("OD ");return OD;}
 "assert" 	{printf("ASSERT ");return ASSERT;}
+decider   {printf("DECIDER "); return DECIDER;}
 
-[a-zA-Z_][a-zA-Z0-9_]* { printf("ID%s\n",yytext);return ID;};
+{ident}   { printf("ID %s\n",yytext);return ID;}
 
 "0"				{printf("F ");return F;}
 "1"				{printf("T ");return T;}
-[|&^=]		{return BOP;}
-"!="			{return BOP;}
-"=>"			{return BOP;}
-"\n"			{printf("newline ");}
+[|&^=]		{return ;}
+"!="			{return UEQ;}
+"=>"			{return ARROW;}
 
-"(" 			{printf("OP\n");return OP;}
-")" 			{printf("CP\n");return CP;}
-":"				{printf(":\n");	return COLON;}
-";"				{printf(";\n");	return TAG;}
-"!"				{printf("!\n");	return NOT;}
-":="			{printf(":=\n");return EQ;}
+"(" 			{return '(';}
+")" 			{printf("CP\n");return ;}
+":"				{printf(":\n");	return ;}
+";"				{printf(";\n");	return ;}
+"!"				{printf("!\n");	return ;}
+":="			{return EQ;}
 
-"*"				{printf("NONDETER ");return (NONDETER);}
+"*"				{return '*';}
 
-[ \t] 		{}
 "//".* 		/*ignore*/
 . 				{printf("Mystery character %c\n", *yytext);}
 %%
