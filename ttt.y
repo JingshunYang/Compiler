@@ -1,5 +1,7 @@
 %{
 #include<stdio.h>
+#include<unistd.h>
+#include "gramtree_v1.h"
 %}
 
 %token DECL BEG END ENFORCE
@@ -11,7 +13,7 @@
 %token ID T F DECIDER UEQ ARROW
 
 %%
-prog  : decl1 proc1
+prog  : |decl1 proc1{$$=newast("Prog",1,$1);printf("打印syntax tree:\n");eval($$,0);printf("syntax tree打印完毕!\n\n");}
       ;
 decl1 :
       | decl decl1
@@ -70,16 +72,3 @@ const	:	T
 			|	F
 			;
 %%
-void main(int argc, char** argv){
-  if(argc > 1){
-    if(!(yyin = fopen(argv[1], "r"))) {
-      perror(argv[1]);
-      return 1;
-    }
-  }
-
-  yyparse();
-}
-yyerror(char *s){
-  fprintf(stderr, "error:%s\n", s);
-}

@@ -48,9 +48,13 @@ decider   {printf("DECIDER "); return DECIDER;}
 ":"				{return ':';}
 ";"				{return ';';}
 "!"				{return '!';}
-":="			{return EQ;}
 "*"				{return '*';}
+":="			{return EQ;}
 
 "//".* 		/*ignore*/
 . 				{printf("Mystery character %c\n", *yytext);}
 %%
+int yywrap()
+{
+        return 1;
+}
