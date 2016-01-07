@@ -14,7 +14,7 @@ struct ast *newast(char* name,int num,...)//抽象语法树建立
     va_list valist; //定义变长参数列表
     struct ast *a=(struct ast*)malloc(sizeof(struct ast));//新生成的父节点
     struct ast *temp=(struct ast*)malloc(sizeof(struct ast));
-    if(!a) 
+    if(!a)
     {
         yyerror("out of space");
         exit(0);
@@ -41,9 +41,10 @@ struct ast *newast(char* name,int num,...)//抽象语法树建立
     {
         int t=va_arg(valist, int); //取第1个变长参数
         a->line=t;
-        if((!strcmp(a->name,"ID"))||(!strcmp(a->name,"TYPE")))//"ID,TYPE,INTEGER，借助union保存yytext的值
+        if(!strcmp(a->name,"ID"))//"ID,TYPE,INTEGER，借助union保存yytext的值
         {char*t;t=(char*)malloc(sizeof(char* )*40);strcpy(t,yytext);a->idtype=t;}
-        else if(!strcmp(a->name,"INTEGER")) {a->intgr=atoi(yytext);}
+        else if(!strcmp(a->name,"FALSE")) {a->bl=0;}
+        else if(!strcmp(a->name,"TRUE"))  {a->bl=1;}
         else {}
     }
     return a;

@@ -16,11 +16,10 @@ struct ast
     char* name;//语法单元的名字
     struct ast *l;//左孩子
     struct ast *r;//右孩子
-    union//共用体用来存放ID/TYPE/INTEGER/FLOAT结点的值
+    union//共用体用来存放ID/BOOL结点的值
     {
     char* idtype;
-    int intgr;
-    float flt;
+    bool bl;
     };
 };
 
