@@ -1,4 +1,4 @@
-ttt: ttt.l ttt.y
+ttt: ttt.l ttt.y gramtree_v1.h
 		bison -d ttt.y
 		flex ttt.l
-		cc -o $@ ttt.tab.c lex.yy.c -lfl
+		gcc ttt.tab.c lex.yy.c gramtree_v1.c 

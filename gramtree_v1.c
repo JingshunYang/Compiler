@@ -6,6 +6,7 @@
 */
 # include<stdio.h>
 # include<stdlib.h>
+# include<stdbool.h>
 # include<stdarg.h>//变长参数函数所需的头文件
 # include"gramtree_v1.h"
 int i;
@@ -58,8 +59,8 @@ void eval(struct ast *a,int level)//先序遍历抽象语法树
             printf("  ");
         if(a->line!=-1){ //产生空的语法单元不需要打印信息
             printf("%s ",a->name);//打印语法单元名字，ID/TYPE/INTEGER要打印yytext的值
-            if((!strcmp(a->name,"ID"))||(!strcmp(a->name,"TYPE")))printf(":%s ",a->idtype);
-            else if(!strcmp(a->name,"INTEGER"))printf(":%d",a->intgr);
+            if(!strcmp(a->name,"ID"))printf(":%s ",a->idtype);
+            else if((!strcmp(a->name,"0"))||(!strcmp(a->name,"1")))printf(":%d",a->bl);
             else
                 printf("(%d)",a->line);
         }

@@ -9,13 +9,16 @@ struct ast* a;
 double d;
 }
 
-%token DECL BEG END ENFORCE
-%token VOID BOOL
-%token SKIP GOTO RETURN
-%token IF THEN ELSE FI
-%token WHILE DO OD
-%token ASSERT EQ
-%token ID T F DECIDER UEQ ARROW
+%token <a> '(' ')' ':' ';' '*' '|' '&' '^' '=' '!'
+%token <a> DECL BEG END ENFORCE
+%token <a> VOID BOOL
+%token <a> SKIP GOTO RETURN
+%token <a> IF THEN ELSE FI
+%token <a> WHILE DO OD
+%token <a> ASSERT EQ
+%token <a> ID T F DECIDER UEQ ARROW
+%type  <a> prog decl1 proc1 decl id2 proc id1 type enforce sseq
+lstmt2 lstmt stmt expr1 expr const
 
 %left '='
 %left '|'
@@ -42,7 +45,7 @@ id1   : {$$=newast("id*",0,-1);}
       | ID id1 {$$=newast("id*",2,$1,$2);}
       ;
 type  : VOID {$$=newast("type",1,$1);}
-      | BOOL {$$=newast("type",1,$2);}
+      | BOOL {$$=newast("type",1,$1);}
       ;
 enforce : ENFORCE expr ';' {$$=newast("enforce",3,$1,$2,$3);}
         ;
