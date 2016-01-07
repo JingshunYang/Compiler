@@ -19,7 +19,7 @@ struct ast
     union//共用体用来存放ID/BOOL结点的值
     {
     char* idtype;
-    bool bl;
+    _Bool bl;
     };
 };
 
