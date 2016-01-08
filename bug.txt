@@ -1,14 +1,14 @@
-decl bool a2(a1) begin (!*)^a1   //decl后面缺少id,漏掉关键字enforce
-decl 3a                          //id声明格式错误
+decl a1 bool a2(a1)begin enforce (!*)^a1 
+decl a3
 skip;
-whil(a1!=0) do goto a2;         //while关键字错误
-a2:=a3|0                        //末尾缺少分号
+whie(a1!=0) do goto a2;
+a2:=a3|0;
 od
 if(decider) then
-assert(1;                     //括号不匹配
-//else语句缺失
-return 1;                     //类型错误：return后面只能跟id
-fi
-end end                       //多余的字符
+assert(1);
+else a3:=a2(a1)
+return 1;
+
+end
 
 //a1,a2,a3是id
