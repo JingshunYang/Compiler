@@ -6,7 +6,6 @@
 */
 # include<stdio.h>
 # include<stdlib.h>
-# include<stdbool.h>
 # include<stdarg.h>//变长参数函数所需的头文件
 # include"gramtree_v1.h"
 int i;

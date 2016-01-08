@@ -40,6 +40,8 @@ id2   : ID {$$=newast("id+",1,$1);}
       | ID id2 {$$=newast("id+",2,$1,$2);}
       ;
 proc  : type ID '(' id1 ')' BEG enforce decl1 sseq END {$$=newast("proc",10,$1,$2,$3,$4,$5,$6,$7,$8,$9,$10);}
+      | type ID '(' id1 ')' BEG enforce decl1 sseq error {yyerror("lost key word: END.");}
+      | error ID '(' id1 ')' BEG enforce decl1 sseq END {yyerror("An illegal type key word occurs.");}
       ;
 id1   : {$$=newast("id*",0,-1);}
       | ID id1 {$$=newast("id*",2,$1,$2);}
@@ -48,6 +50,7 @@ type  : VOID {$$=newast("type",1,$1);}
       | BOOL {$$=newast("type",1,$1);}
       ;
 enforce : ENFORCE expr ';' {$$=newast("enforce",3,$1,$2,$3);}
+        | ENFORCE expr { yyerror("lost ; in the end of line");}
         ;
 sseq  : lstmt2 {$$=newast("sseq",1,$1);}
       ;
@@ -56,6 +59,7 @@ lstmt2: lstmt {$$=newast("lstmt+",1,$1);}
       ;
 lstmt : stmt {$$=newast("lstmt",1,$1);}
       | ID ':' stmt {$$=newast("lstmt",3,$1,$2,$3);}
+      | ID  stmt   { yyerror("lost : after the Identifer.");}
       ;
 stmt  : SKIP ';' {$$=newast("stmt",2,$1,$2);}
       | GOTO ID ';'  {$$=newast("stmt",3,$1,$2,$3);}
@@ -65,6 +69,18 @@ stmt  : SKIP ';' {$$=newast("stmt",2,$1,$2);}
       | WHILE '(' expr ')' DO sseq OD  {$$=newast("stmt",7,$1,$2,$3,$4,$5,$6,$7);}
       | ASSERT '(' expr ')' ';'  {$$=newast("stmt",5,$1,$2,$3,$4,$5);}
       | ID EQ ID '(' expr1 ')'  {$$=newast("stmt",6,$1,$2,$3,$4,$5,$6);}
+
+      | SKIP { yyerror("lost ; in the end of line.");}
+      | GOTO ID { yyerror("lost ; in the end of line.");}
+      | RETURN ID { yyerror("lost ; in the end of line.");}
+      | RETURN error ';' { yyerror("expected an Identifer after RETURN.");}
+      | GOTO error ';'  { yyerror("expected an Identifer after GOTO.");}
+      | ID EQ expr { yyerror("lost ; in the end of line.");}
+      | error '(' expr ')'  {yyerror("illgal key word occurs; Expected a key word: while.");} DO sseq OD
+      | WHILE '(' expr ')' DO sseq error    { yyerror("expected a key word: OD.");}
+      | IF '(' DECIDER ')' THEN sseq ELSE sseq error   { yyerror("expected a key word: FI.");}
+      | ASSERT '(' expr ')' { yyerror("lost ; in the end of line.");}
+
       ;
 expr1 : {$$=newast("expr*",0,-1);}
       | expr expr1  {$$=newast("expr*",2,$1,$2);}
